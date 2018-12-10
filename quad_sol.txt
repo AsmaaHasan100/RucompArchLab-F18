@@ -1,0 +1,33 @@
+main:    	# Read all inputs and put them in floating point registers.
+
+li t2, -3      	# b=-3
+li t1, 1       	# a=1
+li t3, 2       	# c=2
+  
+# In the following lines all the necessary steps are taken to
+# calculate the discriminant of the quadratic equation
+# D = b^2 - 4*a*c
+   
+mul t4,t2,t2    		# t4 = t2*t2, where t2 holds b
+li a3, 4
+mul t5,t1,t3    		# t5 = t1*t3, where t1 holds a and t3 holds c
+li s0, 1    	 	# Square Root Partial Result, sqrt(D).
+NOP
+sub t6,t4,t5    		# Calculate D = b^2-4*a*c
+NOP
+mul t5,t5,a3    		# Multiply value of s0 with 4, creating 4*a*c
+NOP
+NOP
+mv s1,t6    		# Move value in register t6 to register s1 for safety purposes.
+
+We cannot improve the Sqrtloop part of the code, but we can improve the endsqrt part to execute in 11 cycles instead of 14.
+
+endsqrt:
+	neg s2 t2
+	li  t0 2
+	mul s5 t1 t0
+	sub s4 s2 s0
+	add s3 s2 s0
+	div s6 s3 s5
+	div s7 s4 s5
+
